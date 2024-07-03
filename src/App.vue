@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
   <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
@@ -19,6 +14,30 @@ import HelloWorld from './components/HelloWorld.vue'
 
   <RouterView />
 </template>
+<script setup lang="ts">
+import { RouterLink, RouterView } from 'vue-router'
+import HelloWorld from './components/HelloWorld.vue'
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  const ws = new WebSocket("ws://127.0.0.1:10091/api/myWs")
+  ws.onopen = () => {
+    console.log("ws open")
+    ws.send("hello")
+  }
+
+  ws.onmessage = (message) => {
+    console.log(message.data)
+  }
+
+  ws.onclose = () => {
+    console.log("ws close")
+  }
+
+})
+
+
+</script>
 
 <style scoped>
 header {
